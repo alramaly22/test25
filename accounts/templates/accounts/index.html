@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css">
+
+    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+    <title>Marosh Bakery</title>
+</head>
+
+
+<body>
+<!--==================== HEADER ====================-->
+<header class="header" id="header">
+  <nav class="nav container">
+    <a href="#home" class="nav__logo">
+      <img src="{% static 'assets/img/logo1.png' %}" alt="">Marosh Bakery
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
+        <li class="nav__item"><a href="{% url 'menu' %}" class="nav__link">Menu</a></li>
+        <li class="nav__item"><a href="#services" class="nav__link">Order</a></li>
+        <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
+      </ul>
+
+      <!-- Close button -->
+      <div class="nav__close" id="nav-close">
+        <i class="ri-close-line"></i>
+      </div>
+    </div>
+
+    <!-- Cart & Toggle -->
+    <div class="nav__actions">
+      <!-- أيقونة السلة + عداد -->
+        <a href="#cart" class="nav__cart">
+            <i class="ri-shopping-cart-2-line"></i>
+            <span id="cart-count" class="cart-count">0</span>
+        </a>
+        <div class="nav__toggle" id="nav-toggle">
+            <i class="ri-menu-line"></i>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<!--==================== CART ====================-->
+{% comment %} <section class="cart section" id="cart">
+  <h2 class="section__title">Your Cart</h2>
+  <div class="cart__container container">
+    <ul class="cart__items" id="cartItems"></ul>
+    <div class="cart__total">
+      <h3>Total: $<span id="cartTotal">0</span></h3>
+      <button class="button" id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+</section> {% endcomment %}
+
+
+<!--==================== MAIN ====================-->
+<main class="main">
+    <!--==================== HOME ====================-->
+    <section class="home section" id="home">
+        <div class="home__container container grid">
+            <div class="home__data">
+                <h1 class="home__title">
+                    Fresh, Crispy & <br> Totally Irresistible!
+                </h1>
+                <p class="home__description">
+                    Welcome to your new favorite pizza spot! From cheesy pizzas to fresh manakish, kaak, breakfast & more – everything is baked fresh daily, just for you.
+                </p>
+                <a href="#services" class="button">Order Now</a>
+                <img src="{% static 'assets/img/sticker-pizza.svg' %}" alt="" class="home__sticker-1">
+                <img src="{% static 'assets/img/sticker-leaf.svg' %}" alt="" class="home__sticker-2">
+            </div>
+            <div class="home__images">
+                <img src="{% static 'assets/img/homepizza.png' %}" alt="" class="home__pizza">
+                <img src="{% static 'assets/img/home-board.png' %}" alt="" class="home__board">
+                <img src="{% static 'assets/img/home-leaf-1.png' %}" alt="" class="home__ingredient home__leaf-1">
+                <img src="{% static 'assets/img/home-leaf-2.png' %}" alt="" class="home__ingredient home__leaf-2">
+
+                <img src="{% static 'assets/img/home-pepperoni.png' %}" alt="" class="home__ingredient home__pepperoni">
+                <img src="{% static 'assets/img/home-mushroom.png' %}" alt="" class="home__ingredient home__mushroom">
+                <img src="{% static 'assets/img/home-olive.png' %}" alt="" class="home__ingredient home__olive">
+                <img src="{% static 'assets/img/home-tomato.png' %}" alt="" class="home__ingredient home__tomato">
+            </div>
+        </div>
+    </section>
+
+        <!--==================== ABOUT ====================-->
+        <!-- <section class="about section" id="about">
+            <div class="about__container container grid">
+                <div class="about__data">
+                    <h2 class="section__title">Learn More About <br> Our History </h2>
+                    <p class="about__description">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur perferendis accusamus beatae deserunt eum odio inventore, odit assumenda dicta porro iusto dolor dolorum, rem dolorem fugit hic deleniti non! Distinctio?
+                    </p>
+                    <img src="assets/img/sticker-cheese.svg" alt="" class="about__sticker">
+                </div>
+                <img src="assets/img/about-img.png" alt="" class="about__img">
+            </div>
+        </section> -->
+
+ <section class="services section" id="services">
+        <h3 class="section__title">
+        My <span> Services</span>
+        </h3>
+    <div class="services__container container grid">
+        <article class="services__card services1">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Pizza</h2>
+            <a href="{% url 'pizza' %}" class="button">Click Here To Order </a>
+        </article>
+
+        <article class="services__card services2">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Manakish</h2>
+            <a href="{% url 'manakish' %}" class="button">Click Here To Order </a>
+        </article>
+
+        <article class="services__card services3">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Appetizers</h2>
+            <a href="{% url 'appetizers' %}" class="button">Click Here To Order </a>
+        </article>
+
+        <article class="services__card services4">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Turkish Pizzas</h2>
+            <a href="{% url 'pidetr' %}" class="button">Click Here To Order </a>
+        </article>
+
+        <article class="services__card services5">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Kaak</h2>
+            <a href="{% url 'kaak' %}" class="button">Click Here To Order </a>
+        </article>
+
+        <article class="services__card services6">
+            <i class="ri-arrow-left-right-fill sercices__icon"></i>
+            <h2 class="services__title">Breakfast & Platters</h2>
+            <a href="{% url 'breakfast' %}" class="button">Click Here To Order </a>
+        </article>
+    </div>
+</section> 
+
+<!--==================== POPULAR ====================-->
+ <section class="popular section" id="popular">
+    <div class="popular__container container grid">
+        <div class="popular__data">
+            <h2 class="section__title">
+                Discover <br> Popular Orders
+            </h2>
+            {% comment %} <p class="popular__description">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam aperiam repellat explicabo sapiente neque eum officia repellendus exercitationem, accusamus optio officiis placeat culpa, possimus est quisquam pariatur, ab alias fuga!
+            </p> {% endcomment %}
+        </div>
+        <div class="popular__swiper swiper">
+            {% comment %} <img src="{% static 'assets/img/popular-dish.png' %}" alt="" class="popular__dish"> {% endcomment %}
+            <div class="swiper-wrapper">
+                <article class="popular__card swiper-slide">
+                    <img src="{% static 'assets/img/test1.png' %}" alt="" class="popular__img">
+                    <h3 class="popular__title">Margherita Pizza</h3>
+                </article>
+
+                <article class="popular__card swiper-slide">
+                    <img src="{% static 'assets/img/test3.png' %}" alt="" class="popular__img">
+                    <h3 class="popular__title">Mushroom Pizza</h3>
+                </article>
+
+                <article class="popular__card swiper-slide">
+                    <img src="{% static 'assets/img/test2.png' %}" alt="" class="popular__img">
+                    <h3 class="popular__title">Pepperoni Pizza</h3>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--==================== RECIPE ====================-->
+{% comment %} <section class="recipe section">
+    <h2 class="section__title">Fresh And <br> Natural Ingredients</h2>
+    <div class="recipe__container container grid">
+        <div class="recipe__list grid">
+            <div class="recipe__ingredient">
+                <img src="{% static 'assets/img/recipe-flour.png' %}" alt="" class="recipe__image">
+                <div>
+                    <h3 class="recipe__name">Flour</h3>
+                    <p class="recipe__description">The best wheat from the field for the best flour</p>
+                </div>
+            </div>
+            <div class="recipe__ingredient">
+                <img src="{% static 'assets/img/recipe-cheese.png' %}" alt="" class="recipe__image">
+                <div>
+                    <h3 class="recipe__name">Cheese</h3>
+                    <p class="recipe__description">Indulge in cheese for a healthy future.</p>
+                </div>
+            </div>
+            <div class="recipe__ingredient">
+                <img src="{% static 'assets/img/recipe-sauces.png' %}" alt="" class="recipe__image">
+                <div>
+                    <h3 class="recipe__name">Sauces</h3>
+                    <p class="recipe__description">Add a touch of salsa to your life and it will taste better</p>
+                </div>
+            </div>
+            <div class="recipe__ingredient">
+                <img src="{% static 'assets/img/recipe-tomato.png' %}" alt="" class="recipe__image">
+                <div>
+                    <h3 class="recipe__name">Vegetables</h3>
+                    <p class="recipe__description">Vegetables full of the essence of nature and organic</p>
+                </div>
+            </div>
+            <div class="recipe__ingredient">
+                <img src="{% static 'assets/img/recipe-meat.png' %}" alt="" class="recipe__image">
+                <div>
+                    <h3 class="recipe__name">Meats</h3>
+                    <p class="recipe__description">The best fresh meats for your health</p>
+                </div>
+            </div>
+        </div>
+
+        <img src="{% static 'assets/img/recipe-img.png' %}" alt="" class="recipe__img">
+    </div>
+</section> {% endcomment %}
+
+<!--==================== PRODUCTS ====================-->
+<section class="products section" id="products">
+    <h2 class="section__title">The Most <br> Devoured Pizzas</h2>
+    <div class="products__container container grid">
+        <article class="products__card">
+            <img src="{% static 'assets/img/test1.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Vegetables <br> Pizza</h3>
+            <span class="products__price">$15</span>
+            <button class="products__button open-modal" data-name="Vegetables Pizza" data-price="$15" data-img="{% static 'assets/img/product-1.png' %}" data-desc="pizza sauce, onion, capsicum, mushroom, olives, pineapple, cheese">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test2.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Pepperoni <br> Pizza</h3>
+            <span class="products__price">$10</span>
+            <button class="products__button open-modal" data-name="Pepperoni Pizza" data-price="$10" data-img="{% static 'assets/img/product-2.png' %}" data-desc="pizza sauce, cheese, pepperoni">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test3.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Margherita <br> Pizza</h3>
+            <span class="products__price">$15</span>
+            <button class="products__button open-modal" data-name="Margherita Pizza" data-price="$15" data-img="{% static 'assets/img/product-3.png' %}" data-desc="pizza sauce, cheese, oregano">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test4.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Mushroom <br> Pizza</h3>
+            <span class="products__price">$19</span>
+            <button class="products__button open-modal" data-name="Mushroom Pizza" data-price="$19" data-img="{% static 'assets/img/product-4.png' %}" data-desc="pizza sauce, cheese, mushroom">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test5.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Mushroom <br> Pizza</h3>
+            <span class="products__price">$19</span>
+            <button class="products__button open-modal" data-name="Mushroom Pizza" data-price="$19" data-img="{% static 'assets/img/product-4.png' %}" data-desc="pizza sauce, cheese, mushroom">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test6.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Mushroom <br> Pizza</h3>
+            <span class="products__price">$19</span>
+            <button class="products__button open-modal" data-name="Mushroom Pizza" data-price="$19" data-img="{% static 'assets/img/product-4.png' %}" data-desc="pizza sauce, cheese, mushroom">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test7.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Mushroom <br> Pizza</h3>
+            <span class="products__price">$19</span>
+            <button class="products__button open-modal" data-name="Mushroom Pizza" data-price="$19" data-img="{% static 'assets/img/product-4.png' %}" data-desc="pizza sauce, cheese, mushroom">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/test8.png' %}" alt="" class="products__img">
+            <h3 class="products__name">Mushroom <br> Pizza</h3>
+            <span class="products__price">$19</span>
+            <button class="products__button open-modal" data-name="Mushroom Pizza" data-price="$19" data-img="{% static 'assets/img/product-4.png' %}" data-desc="pizza sauce, cheese, mushroom">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+    </div>
+</section>
+
+<!-- ============ MODAL Product============ -->
+        <div class="modal" id="pizzaModal">
+            <div class="modal__content">
+                <span class="modal__close">&times;</span>
+                <img src="" alt="" class="modal__img" id="modalImg">
+                <h2 class="modal__title" id="modalName"></h2>
+                <p class="modal__desc" id="modalDesc"></p>
+                <span class="modal__price" id="modalPrice"></span>
+
+                <!-- Quantity selector -->
+                <div class="modal__qty">
+                    <button id="decreaseQty">-</button>
+                    <input type="number" id="modalQty" value="1" min="1">
+                    <button id="increaseQty">+</button>
+                </div>
+
+                <button class="modal__add" id="addToCartBtn">
+            Add To Cart <i class="ri-shopping-bag-3-fill"></i>
+        </button>
+            </div>
+        </div>
+
+
+<!--==================== CONTACT ====================-->
+<section class="contact section" id="contact">
+    <div class="contact__container container grid">
+        <div class="contact__data">
+            <h2 class="section__title">Contact Now</h2>
+
+            <div class="contact__info grid">
+                <div>
+                    <h3 class="contact__title">Call Us</h3>
+                    <div class="contact__social">
+                        {% comment %} <a href="#" class="contact__social-link">
+                            <i class="ri-whatsapp-fill"></i>
+                        </a> {% endcomment %}
+
+                       <a href="tel:0287907859" class="contact__social-link">
+                            <i class="ri-phone-fill"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div>
+                    <h3 class="contact__title">Location</h3>
+                    <address class="contact__address">
+                        2/2 -10 Restwell St,
+                    </br>Bankstown NSW 2200, Australia
+                    </address>
+                    <a href="https://maps.app.goo.gl/dVhDdDyEwRRHoM3E7" class="contact__map">
+                        <i class="ri-map-pin-fill"></i>
+                        <span>View On Map</span>
+                    </a>
+                </div>
+            </div>
+                <div style="text-align: center;">
+                        <h3 class="contact__title">Delivery</h3>
+                        <div class="contact__delivery">
+                            <a target="_blank">
+                                <img src="{% static 'assets/img/doordash9.png' %}" alt="DoorDash">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/menulog.png' %}" alt="Menulog">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/ubereats1.png' %}" alt="UberEats">
+                            </a>
+                        </div>
+                    </div>
+        </div>
+        <div class="contact__image">
+            <img src="{% static 'assets/img/contact-img.png' %}" alt="" class="contact__img">
+        </div>
+        <img src="{% static 'assets/img/sticker-tomato.svg' %}" alt="" class="contact__sticker-1">
+        <img src="{% static 'assets/img/sticker-mushroom.svg' %}" alt="" class="contact__sticker-2">
+        <img src="{% static 'assets/img/sticker-onion.svg' %}" alt="" class="contact__sticker-3">
+    </div>
+</section>
+</main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container grid">
+        <a href="{% url 'index' %}" class="footer__logo">Marosh Bakery</a>
+        <div class="footer__contact grid">
+            <div>
+                <h3 class="footer__titile">Social</h3>
+                <div class="footer__social">
+                    <a href="https://www.instagram.com/maroshbakerycafe/?hl=en" class="footer__social-link">
+                        <i class="ri-instagram-fill"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@maroshbakerycafe" class="footer__social-link">
+                        <i class="ri-tiktok-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Payment Methods</h3>
+                <div class="footer__pay">
+                    <img src="{% static 'assets/img/footer-card-1.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-2.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-3.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-4.png' %}" alt="" class="footer__pay-img">
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Subscribe For Discounts</h3>
+                <form action="" class="footer__form">
+                    <input type="email" placeholder="Email" class="footer__input">
+                    <button type="submit" class="footer__button button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer__policy">
+        <a href="#" class="footer__link">Terms & Agreements</a>
+        <a href="#" class="footer__link">Privacy Policy</a>
+    </div>
+    <span class="footer__copy">
+        &#169; All Rights Reserved By Alramly
+    </span>
+</footer>
+
+    <!--========== SCROLL UP ==========-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="ri-arrow-up-circle-fill"></i>
+    </a>
+<!--=============== SCROLLREVEAL ===============-->
+<script src="https://js.stripe.com/v3/"></script>
+
+{% comment %} <script>
+  const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+
+  document.getElementById("order-submit").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const paymentMethod = document.getElementById("payment").value;
+
+    // تجهيز بيانات الأوردر من الفورم والكارت
+    const orderData = {
+      name: document.getElementById("name").value,
+      phone: document.getElementById("phone").value,
+      address: document.getElementById("address").value,
+      notes: document.getElementById("notes").value,
+      payment_method: paymentMethod,
+      items: cart.map(item => ({
+        name: item.name,
+        price: parseFloat(item.price),
+        qty: item.qty,
+      })),
+      total: parseFloat(cartTotal.textContent)
+    };
+
+    fetch("/api/create-order/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify(orderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (paymentMethod === "ONLINE") {
+        if (data.checkout_url) {
+          // تحويل لصفحة الدفع Stripe
+          window.location.href = data.checkout_url;
+        } else {
+          alert("❌ فشل إنشاء جلسة الدفع: " + (data.error || "Unknown error"));
+        }
+      } else {
+        // كاش عند الاستلام → شكراً
+        alert("✅ تم تأكيد طلبك بنجاح!");
+        window.location.href = "/thanks/";
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("❌ حصل خطأ أثناء تجهيز الطلب.");
+    });
+  });
+</script> {% endcomment %}
+
+
+<script src="{% static 'assets/js/scrollreveal.min.js' %}"></script>
+<script src="{% static 'assets/js/modal.js' %}"></script>
+
+<!--=============== SWIPER JS ===============-->
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+
+<!--=============== MAIN JS ===============-->
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

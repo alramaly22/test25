@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css">
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+    <title>Marosh Bakery</title>
+    <style>
+/* =================== Spinner Overlay =================== */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid hsl(35, 100%, 50%);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+}
+
+/* =================== Checkout Modal =================== */
+.checkout-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.checkout-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.checkout-content h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #e63946;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.checkout-content label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.checkout-content input,
+.checkout-content textarea,
+.checkout-content select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkout-content input:focus,
+.checkout-content textarea:focus,
+.checkout-content select:focus {
+    border-color: #e63946;
+    box-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
+    outline: none;
+}
+
+.error-message {
+    color: #e63946;
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+}
+
+/* =================== Submit Button =================== */
+.submit-btn {
+    width: 100%;
+    background: #e63946;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 18px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.submit-btn:hover {
+    background: #d62839;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+.checkout-close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* =================== Product in Modal (if any) =================== */
+.modal-product {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.modal-product img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.modal-product-info {
+    flex: 1;
+}
+
+.modal-product-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.modal-product-info p {
+    margin: 0;
+    font-size: 13px;
+    color: #555;
+}
+
+/* =================== Animations =================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =================== Responsive =================== */
+@media (max-width: 768px) {
+    .checkout-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-product img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .checkout-content h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-content h2 {
+        font-size: 20px;
+    }
+
+    .checkout-content label {
+        font-size: 13px;
+    }
+
+    .checkout-content input,
+    .checkout-content textarea,
+    .checkout-content select,
+    .submit-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .modal-product {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal-product img {
+        margin-bottom: 5px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+<header class="header" id="header">
+  <nav class="nav container">
+    <a href="#home" class="nav__logo">
+      <img src="{% static 'assets/img/logo1.png' %}" alt="">Marosh Bakery
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li class="nav__item"><a href="{% url 'index' %}" class="nav__link">Home</a></li>
+        <li class="nav__item"><a href="{% url 'menu' %}" class="nav__link">Menu</a></li>
+        <li class="nav__item"><a href="{% url 'index' %}#services" class="nav__link">Order</a></li>
+        <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__close" id="nav-close"><i class="ri-close-line"></i></div>
+    </div>
+
+    <div class="nav__actions">
+      {% comment %} <a href="#cart" class="nav__cart">
+        <i class="ri-shopping-cart-2-line"></i>
+        <span id="cart-count" class="cart-count">0</span>
+      </a> {% endcomment %}
+      <div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div>
+    </div>
+  </nav>
+</header>
+
+<main class="main">
+<section class="cart section" id="cart">
+  <h2 class="section__title">Your Cart</h2>
+  <div class="cart__container container">
+    <ul class="cart__items" id="cartItems"></ul>
+    <div class="cart__total">
+      <h3>Total: $<span id="cartTotal">0</span></h3>
+      <button class="button" id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+</section>
+<!--==================== CONTACT ====================-->
+<section class="contact section" id="contact">
+    <div class="contact__container container grid">
+        <div class="contact__data">
+            <h2 class="section__title">Contact Now</h2>
+
+            <div class="contact__info grid">
+                <div>
+                    <h3 class="contact__title">Call Us</h3>
+                    <div class="contact__social">
+                        {% comment %} <a href="#" class="contact__social-link">
+                            <i class="ri-whatsapp-fill"></i>
+                        </a> {% endcomment %}
+
+                       <a href="tel:0287907859" class="contact__social-link">
+                            <i class="ri-phone-fill"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div>
+                    <h3 class="contact__title">Location</h3>
+                    <address class="contact__address">
+                        2/2 -10 Restwell St,
+                    </br>Bankstown NSW 2200, Australia
+                    </address>
+                    <a href="https://maps.app.goo.gl/dVhDdDyEwRRHoM3E7" class="contact__map">
+                        <i class="ri-map-pin-fill"></i>
+                        <span>View On Map</span>
+                    </a>
+                </div>
+            </div>
+                <div style="text-align: center;">
+                        <h3 class="contact__title">Delivery</h3>
+                        <div class="contact__delivery">
+                            <a target="_blank">
+                                <img src="{% static 'assets/img/doordash9.png' %}" alt="DoorDash">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/menulog.png' %}" alt="Menulog">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/ubereats1.png' %}" alt="UberEats">
+                            </a>
+                        </div>
+                    </div>
+        </div>
+        <div class="contact__image">
+            <img src="{% static 'assets/img/contact-img.png' %}" alt="" class="contact__img">
+        </div>
+        <img src="{% static 'assets/img/sticker-tomato.svg' %}" alt="" class="contact__sticker-1">
+        <img src="{% static 'assets/img/sticker-mushroom.svg' %}" alt="" class="contact__sticker-2">
+        <img src="{% static 'assets/img/sticker-onion.svg' %}" alt="" class="contact__sticker-3">
+    </div>
+</section>
+</main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container grid">
+        <a href="{% url 'index' %}" class="footer__logo">Marosh Bakery</a>
+        <div class="footer__contact grid">
+            <div>
+                <h3 class="footer__titile">Social</h3>
+                <div class="footer__social">
+                    <a href="https://www.instagram.com/maroshbakerycafe/?hl=en" class="footer__social-link">
+                        <i class="ri-instagram-fill"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@maroshbakerycafe" class="footer__social-link">
+                        <i class="ri-tiktok-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Payment Methods</h3>
+                <div class="footer__pay">
+                    <img src="{% static 'assets/img/footer-card-1.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-2.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-3.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-4.png' %}" alt="" class="footer__pay-img">
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Subscribe For Discounts</h3>
+                <form action="" class="footer__form">
+                    <input type="email" placeholder="Email" class="footer__input">
+                    <button type="submit" class="footer__button button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer__policy">
+        <a href="#" class="footer__link">Terms & Agreements</a>
+        <a href="#" class="footer__link">Privacy Policy</a>
+    </div>
+    <span class="footer__copy">
+        &#169; All Rights Reserved By Alramly
+    </span>
+</footer>
+
+</main>
+
+<!-- Checkout Modal -->
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+  <div class="checkout-content">
+    <span class="checkout-close">&times;</span>
+    <h2>Complete Your Order</h2>
+    <form id="checkout-form">
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+        <small class="error-message"></small>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+        <small class="error-message"></small>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" placeholder="Enter your delivery address" required></textarea>
+        <small class="error-message"></small>
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" placeholder="Any additional notes"></textarea>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="form-group">
+        <label for="payment">Payment Method</label>
+        <select id="payment" name="payment" required>
+          <option value="COD">Cash on Delivery</option>
+          <option value="ONLINE">Online Payment</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn">Place Order</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p class="loading-text">🍕 Cooking up your order... just a moment!</p>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+const loadingOverlay = document.getElementById("loadingOverlay");
+
+// Render Cart
+function renderCart() {
+    cartItems.innerHTML = "";
+    let total = 0;
+    cart.forEach(item => {
+        total += item.price * item.qty;
+        const li = document.createElement("li");
+        li.innerHTML = `
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>Price: $${item.price} x ${item.qty}</p>
+          </div>
+        </div>`;
+        cartItems.appendChild(li);
+    });
+    cartTotal.textContent = total.toFixed(2);
+}
+renderCart();
+
+// Modal Logic
+const checkoutModal = document.getElementById("checkoutModal");
+const checkoutBtn = document.getElementById("checkoutBtn");
+const closeBtn = document.querySelector(".checkout-close");
+
+checkoutBtn.addEventListener("click", () => {
+    if(cart.length === 0){
+        alert("❌ الكارت فاضي! أضف منتجات قبل الدفع.");
+        return;
+    }
+    checkoutModal.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", () => checkoutModal.style.display = "none");
+window.addEventListener("click", (e) => { if(e.target === checkoutModal) checkoutModal.style.display = "none"; });
+
+// Checkout Form
+const checkoutForm = document.getElementById("checkout-form");
+checkoutForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(loadingOverlay) loadingOverlay.style.display = "flex";
+
+    const orderData = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+        notes: document.getElementById("notes").value,
+        payment_method: document.getElementById("payment").value,
+        items: cart,
+        total: parseFloat(cartTotal.textContent)
+    };
+
+    fetch("{% url 'create_order' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(orderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Stripe Response:", data);
+        if(orderData.payment_method === "ONLINE") {
+            // Online Payment → Stripe Checkout
+            if(data.checkout_url){
+                setTimeout(() => { 
+                    window.location.href = data.checkout_url; 
+                }, 1500);
+            } else {
+                alert("❌ Stripe Error: " + (data.error || "Unknown error"));
+                loadingOverlay.style.display = "none";
+            }
+        } else {
+            // Cash on Delivery
+            setTimeout(() => {
+                loadingOverlay.style.display = "none"; 
+                alert("✅ Order confirmed! Your order is on the way 🚀");
+                localStorage.removeItem("cart"); 
+                checkoutForm.reset(); 
+                checkoutModal.style.display = "none"; 
+                renderCart();
+                window.location.href = "/"; 
+            }, 1500);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("❌ Error placing order.");
+        loadingOverlay.style.display = "none";
+    });
+});
+</script>
+
+</body>
+</html>

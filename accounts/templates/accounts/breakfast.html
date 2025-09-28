@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css">
+
+    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+    <title>Breakfast</title>
+</head>
+
+<body>
+
+<!--==================== HEADER ====================-->
+<header class="header" id="header">
+    <nav class="nav container">
+        <a href="{% url 'index' %}" class="nav__logo">
+            <img src="{% static 'assets/img/logo1.png' %}" alt="">Marosh Bakery
+        </a>
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li class="nav__item"><a href="{% url 'index' %}#home" class="nav__link">Home</a></li>
+                <li class="nav__item"><a href="{% url 'menu' %}" class="nav__link">Menu</a></li>
+                <li class="nav__item"><a href="{% url 'index' %}#services" class="nav__link">Order</a></li>
+                <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
+            </ul>
+
+            <!-- Close button -->
+            <div class="nav__close" id="nav-close">
+                <i class="ri-close-line"></i>
+            </div>
+        </div>
+
+    <!-- Cart & Toggle -->
+    <div class="nav__actions">
+        <!-- أيقونة السلة + عداد -->
+        <a href="#cart" class="nav__cart">
+            <i class="ri-shopping-cart-2-line"></i>
+            <span id="cart-count" class="cart-count">0</span>
+        </a>
+        <div class="nav__toggle" id="nav-toggle">
+            <i class="ri-menu-line"></i>
+        </div>
+    </div>
+    </nav>
+</header>
+
+
+    <!--==================== MAIN ====================-->
+    <main class="main">
+<!--==================== HOME ====================-->
+<section class="home testforhome section" id="home">
+    <div class="home__container container grid">
+        <div class="home__data">
+                <h1 style="color:white;" class="home__title">
+                    Fresh & <br> Hearty Breakfast
+                </h1>
+                <p style="color: gray;" class="home__description">
+                    Kickstart your day with our warm and satisfying breakfast, made fresh every morning!
+                </p>
+
+            <img src="{% static 'assets/img/sticker-pizza.svg' %}" alt="" class="home__sticker-1">
+            <img src="{% static 'assets/img/sticker-leaf.svg' %}" alt="" class="home__sticker-2">
+            </div>
+            <div class="home__images">
+                <img src="{% static 'assets/img/breakfast.png' %}" alt="" class="home__pizza">
+            </div>
+    </div>
+</section>
+
+<!--==================== PRODUCTS ====================-->
+<section style="background: hsl(24, 86%, 88%);" class="products section" id="products">
+    <h2 class="section__title">The Most <br> Devoured Breakfast</h2>
+    <div class="products__container container grid">
+        <article class="products__card">
+            <img src="{% static 'assets/img/breakfast.png' %}" alt="" class="products__img2">
+            <h3 class="products__name">Damascus <br> Breakfast</h3>
+            <span class="products__price">$15</span>
+            <button class="products__button open-modal" data-name="Damascus Breakfast" data-price="$10" data-img="{% static 'assets/img/breakfast.png' %}" data-desc="Potato fried with egg & vegetables ,  with: Fresh bread">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/breakfast.png' %}" alt="" class="products__img2">
+            <h3 class="products__name">Arabic<br> Breakfast</h3>
+            <span class="products__price">$10</span>
+            <button class="products__button open-modal" data-name="Arabic Breakfast" data-price="$10" data-img="{% static 'assets/img/breakfast.png' %}" data-desc="Eggs with onion, capsicum, mushroom, tomato , with: Small bread">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/breakfast.png' %}" alt="" class="products__img2">
+            <h3 class="products__name">Hummos, Labneh, Cheese Platters</h3>
+            <span class="products__price">$12</span>
+            <button class="products__button open-modal" data-name="Hummos, Labneh, Cheese Platters" data-price="$10" data-img="{% static 'assets/img/breakfast.png' %}" data-desc="Hummos → Chickpeas, tahini, lemon juice, garlic, olive oil, salt.
+Labneh → Strained yogurt, olive oil, dried mint, salt.
+Cheese Platter → Assorted cheeses (Halloumi, Akkawi, Kashkaval, Mozzarella), olives, tomato, cucumber.
+with: Fresh bread">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+
+        <article class="products__card">
+            <img src="{% static 'assets/img/breakfast.png' %}" alt="" class="products__img2">
+            <h3 class="products__name">Mixed Breakfast<br> Breakfast</h3>
+            <span class="products__price">$17</span>
+            <button class="products__button open-modal" data-name="Mixed Breakfast" data-price="$10" data-img="{% static 'assets/img/breakfast.png' %}" data-desc="Labneh, cheese, olives, sausage, vegetables , with: Bread">
+                <i class="ri-shopping-bag-3-fill"></i>
+            </button>
+        </article>
+    </div>
+</section>
+<!-- ============ MODAL Product============ -->
+        <div class="modal" id="pizzaModal">
+            <div class="modal__content">
+                <span class="modal__close">&times;</span>
+                <img src="" alt="" class="modal__img" id="modalImg">
+                <h2 class="modal__title" id="modalName"></h2>
+                <p class="modal__desc" id="modalDesc"></p>
+                <span class="modal__price" id="modalPrice"></span>
+
+                <!-- Quantity selector -->
+                <div class="modal__qty">
+                    <button id="decreaseQty">-</button>
+                    <input type="number" id="modalQty" value="1" min="1">
+                    <button id="increaseQty">+</button>
+                </div>
+
+                <button class="modal__add" id="addToCartBtn">
+            Add To Cart <i class="ri-shopping-bag-3-fill"></i>
+        </button>
+            </div>
+        </div>
+
+<!--==================== CONTACT ====================-->
+<section class="contact section" id="contact">
+    <div class="contact__container container grid">
+        <div class="contact__data">
+            <h2 class="section__title">Contact Now</h2>
+
+            <div class="contact__info grid">
+                <div>
+                    <h3 class="contact__title">Call Us</h3>
+                    <div class="contact__social">
+                        {% comment %} <a href="#" class="contact__social-link">
+                            <i class="ri-whatsapp-fill"></i>
+                        </a> {% endcomment %}
+
+                       <a href="tel:0287907859" class="contact__social-link">
+                            <i class="ri-phone-fill"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div>
+                    <h3 class="contact__title">Location</h3>
+                    <address class="contact__address">
+                        2/2 -10 Restwell St,
+                    </br>Bankstown NSW 2200, Australia
+                    </address>
+                    <a href="https://maps.app.goo.gl/dVhDdDyEwRRHoM3E7" class="contact__map">
+                        <i class="ri-map-pin-fill"></i>
+                        <span>View On Map</span>
+                    </a>
+                </div>
+            </div>
+                <div style="text-align: center;">
+                        <h3 class="contact__title">Delivery</h3>
+                        <div class="contact__delivery">
+                            <a target="_blank">
+                                <img src="{% static 'assets/img/doordash9.png' %}" alt="DoorDash">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/menulog.png' %}" alt="Menulog">
+                            </a>
+                            <a target="_blank">
+                                <img src=" {% static 'assets/img/ubereats1.png' %}" alt="UberEats">
+                            </a>
+                        </div>
+                    </div>
+        </div>
+        <div class="contact__image">
+            <img src="{% static 'assets/img/contact-img.png' %}" alt="" class="contact__img">
+        </div>
+        <img src="{% static 'assets/img/sticker-tomato.svg' %}" alt="" class="contact__sticker-1">
+        <img src="{% static 'assets/img/sticker-mushroom.svg' %}" alt="" class="contact__sticker-2">
+        <img src="{% static 'assets/img/sticker-onion.svg' %}" alt="" class="contact__sticker-3">
+    </div>
+</section>
+    </main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container grid">
+        <a href="{% url 'index' %}" class="footer__logo">Marosh Bakery</a>
+        <div class="footer__contact grid">
+            <div>
+                <h3 class="footer__titile">Social</h3>
+                <div class="footer__social">
+                    <a href="https://www.instagram.com/maroshbakerycafe/?hl=en" class="footer__social-link">
+                        <i class="ri-instagram-fill"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@maroshbakerycafe" class="footer__social-link">
+                        <i class="ri-tiktok-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Payment Methods</h3>
+                <div class="footer__pay">
+                    <img src="{% static 'assets/img/footer-card-1.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-2.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-3.png' %}" alt="" class="footer__pay-img">
+                    <img src="{% static 'assets/img/footer-card-4.png' %}" alt="" class="footer__pay-img">
+                </div>
+            </div>
+            <div>
+                <h3 class="footer__titile">Subscribe For Discounts</h3>
+                <form action="" class="footer__form">
+                    <input type="email" placeholder="Email" class="footer__input">
+                    <button type="submit" class="footer__button button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer__policy">
+        <a href="#" class="footer__link">Terms & Agreements</a>
+        <a href="#" class="footer__link">Privacy Policy</a>
+    </div>
+    <span class="footer__copy">
+        &#169; All Rights Reserved By Alramly
+    </span>
+</footer>
+    <!--========== SCROLL UP ==========-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="ri-arrow-up-circle-fill"></i>
+    </a>
+
+<!--=============== SCROLLREVEAL ===============-->
+<script src="{% static 'assets/js/scrollreveal.min.js' %}"></script>
+<script src="{% static 'assets/js/modal.js' %}"></script>
+
+<!--=============== SWIPER JS ===============-->
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+
+<!--=============== MAIN JS ===============-->
+<script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>
